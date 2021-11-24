@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">قائمة الموظفين</h1>
+</div>
+<div class="text-right" dir="rtl">
+    <a asp-action="AddEmployee" class="btn btn-primary align-self-end">إضافة موظف</a>
+    <div class="mt-5">
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>القسم</th>
+                    <th>الاسم بالعربي</th>
+                    <th>الاسم اجنبي</th>
+                    <th>الراتب</th>
+                    <th> </th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+@section Scripts {
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <!-- CSS only -->
+    <!-- JavaScript Bundle with Popper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script>
+        $.ajax({
+            url: "/Employee",
+            type: 'GET',
+            success: (res) => {
+                $('#table_id').DataTable({
+                    searching: false, paging: false, info: false,
+                    data: res,
+                    columns: [
+                        { data: 'id' },
+                        { data: 'department' },
+                        { data: 'name_Ar' },
+                        { data: 'name_En' },
+                        { data: 'salary' },
+                        {
+                            "title": "",
+                            "data": "id",
+                            "searchable": false,
+                            "sortable": false,
+                            "render": function (data, type, full, meta) {
+                                return '<a href="@Url.Action("EditEmployee")?id=' + data + '" class="editUser"><i class="bi bi-pencil-fill"></i></a>';
+                            }
+                        },
+                    ]
+                });
+            },
+            error: () => { }
+        });
+
+    </script>
+} 

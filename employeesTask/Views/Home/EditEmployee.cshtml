@@ -1,0 +1,97 @@
+﻿@model employeesTask.Models.EmployeeModel
+<div class="text-right" dir="rtl">
+    <h1>تعديل بيانات الموظف</h1>
+    <form id="employeeForm">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label>القسم</label>
+            @Html.DropDownListFor(m => m.Department_Id,
+                new SelectList(ViewBag.Departments, "Value",
+                "Text"),
+                "القسم", new { @class = "form-control w-50", dir = "rtl" })
+            <span asp-validation-for="Department_Id" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>الاسم</label>
+            @Html.TextBoxFor(m => m.Name_Ar, new { @class = "form-control w-50", dir = "rtl"})
+            <span asp-validation-for="Name_Ar" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>الاسم(اجنبي)</label>
+            @Html.TextBoxFor(m => m.Name_En, new { @class = "form-control w-50"})
+            <span asp-validation-for="Name_En" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>الايميل</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control w-50", dir = "rtl"})
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>الرقم</label>
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control w-50", dir = "rtl"})
+            <span asp-validation-for="Phone" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>العنوان</label>
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control w-50", dir = "rtl"})
+
+        </div>
+        <div class="d-flex justify-content-around w-50">
+            <button class="btn btn-success col-md-2" type="submit">حفظ</button>
+            <button id="btnDelete" class="btn btn-danger col-md-2" type="button">حذف</button>
+        </div>
+
+    </form>
+</div>
+@section Scripts{
+    <script>
+        const params = new URLSearchParams(window.location.search)
+        //console.log(params.get('id'))
+        $.ajax({
+            url: "/employee/" + params.get('id'),
+            success: res => {
+                console.log('Hi');
+                console.log(res);
+                $("#Department_Id").val(res.department_Id);
+                $("#Name_Ar").val(res.name_Ar);
+                $("#Name_En").val(res.name_En);
+                $("#Email").val(res.email);
+                $("#Phone").val(res.phone);
+                $("#Address").val(res.address);
+            },
+            error: e => console.log(e)
+        });
+
+        $("#employeeForm").on("submit", (e) => {
+            var body = {
+                Department_Id: $("#Department_Id").val(),
+                Name_Ar: $("#Name_Ar").val(),
+                Name_En: $("#Name_En").val(),
+                Email: $("#Email").val(),
+                Phone: $("#Phone").val(),
+                Address: $("#Address").val(),
+            }
+            e.preventDefault();
+            if ($("#employeeForm").valid()) {
+                $.ajax({
+                    type: "PUT",
+                    url: "/employee/" + params.get('id'),
+                    contentType: "application/json",
+                    data: JSON.stringify(body),
+                    success: () => { window.location.replace("/home"); },
+                    error: (e) => { console.log(e) }
+                })
+            }
+        })
+
+        $("#btnDelete").on('click', (e) => {
+            if (!confirm("هل أنت متأكد من حذف معلومات الموظف بشكل نهائي ؟")) return;
+            $.ajax({
+                method:"DELETE",
+                url: "/employee/" + params.get('id'),
+                success: () => { window.location.replace("/home"); },
+                error: (e) => { console.log(e) }
+            })
+        });
+    </script>
+}
