@@ -24,6 +24,13 @@ namespace employeesTask.Controllers
 
         public IActionResult Index()
         {
+            // this is only for task purposes
+            if (_db.Departments.Count() == 0)
+            {
+                _db.Departments.Add(new DepartmentModel { Name_Ar = "المحاسبة", Name_En = "Accounting" });
+                _db.Departments.Add(new DepartmentModel { Name_Ar = "تكنولوجيا المعلومات", Name_En = "IT" });
+                _db.SaveChanges();
+            }
             return View();
         }
 

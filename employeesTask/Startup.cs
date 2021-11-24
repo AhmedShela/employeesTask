@@ -29,6 +29,7 @@ namespace employeesTask
 
             services.AddDbContext<ApplicationContext>(option => {
                 option.UseSqlServer("Server=.\\SQLEXPRESS;Initial Catalog=AhmadTask;User ID=sa;Password=123;Connection Timeout=30;");
+                //options.EnableRetryOnFailure()
             });
         }
 
