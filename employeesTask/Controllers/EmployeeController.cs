@@ -51,8 +51,9 @@ namespace employeesTask.Controllers
         {
             try
             {
-                var x = await _db.Employees.FirstOrDefaultAsync(a => a.Id == id);
-                return Ok(x);
+                var employee = await _db.Employees.FirstOrDefaultAsync(a => a.Id == id);
+                if (employee == null) return BadRequest();
+                return Ok(employee);
             }
             catch (Exception ex)
             {
@@ -65,8 +66,9 @@ namespace employeesTask.Controllers
         {
             try
             {
-                var x = _db.Employees.FirstOrDefault(a => a.Id == id);
-                _db.Employees.Remove(x);
+                var employee = _db.Employees.FirstOrDefault(a => a.Id == id);
+                if (employee == null) return BadRequest();
+                _db.Employees.Remove(employee);
                 await _db.SaveChangesAsync();
                 return Ok();
             }
