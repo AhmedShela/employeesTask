@@ -24,7 +24,7 @@ namespace employeesTask.Models
         [Required(ErrorMessage = "الحقل مطلوب"), EmailAddress(ErrorMessage ="خطأ في كتابة البريد"), StringLength(50, ErrorMessage = "يجب أن لا يتجاوز البريد 50 حرف")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "الحقل مطلوب"), Phone(ErrorMessage ="خطأ في كتابة الرقم"), StringLength(16, ErrorMessage = "يجب أن لا يتجاوز الهاتف 16 حرف")]
+        [Required(ErrorMessage = "الحقل مطلوب"), Phone, RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "خطأ في كتابة رقم الهاتف"), StringLength(16, ErrorMessage = "يجب أن لا يتجاوز الهاتف 16 حرف")]
         public string Phone { get; set; }
 
         public float Salary { get; set; }

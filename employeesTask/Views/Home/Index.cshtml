@@ -7,6 +7,16 @@
 </div>
 <div class="text-right" dir="rtl">
     <a asp-action="AddEmployee" class="btn btn-primary align-self-end">إضافة موظف</a>
+    <div id="loadingDiv" class="mt-5">
+        <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only">Loading...</span>
+        </button>
+        <button class="btn btn-primary" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
     <div class="mt-5">
         <table id="table_id" class="display">
             <thead>
@@ -56,6 +66,7 @@
                         },
                     ]
                 });
+                $("#loadingDiv").hide();
             },
             error: () => { }
         });
